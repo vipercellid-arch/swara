@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Filled Play triangle with S-wave cutout matching Swara launcher icon -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M22,20 C22,11 31,6 39,10.5 L82,36.5 C89,40.8 89,51.2 82,55.5 L39,81.5 C31,86 22,81 22,72 Z M35,64 C32,64 30,61 31,58 C33,49 42,46 49,42 C55,39 60,36 61,30 C61.5,27 64.5,25.5 67,26.5 C70,27.5 71,30.5 70,33.5 C68,42 60,46 53,50 C47,53 41,56 40,61 C39.5,63 37.5,64 35,64 Z" />
+</vector>

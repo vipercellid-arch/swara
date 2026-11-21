@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swara</title>
+  <link rel="icon" href="/assets/swara_icon.jpg" />
+  <style>
+    :root {
+      --bg: #050507;
+      --surface: #0f1014;
+      --surface-2: #16171f;
+      --border: rgba(255,255,255,0.09);
+      --text: #f8fafc;
+      --muted: #8a8d9b;
+      --accent: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 26px 26px;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Sticky Frosted Pill Navbar */
+    .nav-wrap {
+      position: sticky; top: 14px; z-index: 50;
+      display: flex; justify-content: center; padding: 0 16px;
+    }
+    .nav {
+      width: 100%; max-width: 920px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(14, 15, 20, 0.72);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px 8px 14px;
+      box-shadow: 0 14px 36px rgba(0,0,0,0.45);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; user-select: none;
+    }
+    .brand img {
+      width: 34px; height: 34px; border-radius: 10px; object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+    .brand span { font-size: 1.05rem; font-weight: 900; letter-spacing: -0.02em; }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.84rem; font-weight: 700;
+      padding: 8px 13px; border-radius: 999px; transition: all .18s ease;
+    }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+    .nav-links a.cta { background: #fff; color: #050507; }
+    .nav-links a.cta:hover { opacity: 0.9; }
+
+    /* Kinetic Editorial Hero */
+    .hero {
+      position: relative;
+      min-height: 78vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 76px 20px 56px;
+      overflow: hidden;
+    }
+    .bg-kinetic {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      justify-content: center; gap: 6px; pointer-events: none; user-select: none;
+      opacity: 0.055; overflow: hidden;
+    }
+    .k-row {
+      white-space: nowrap; font-size: clamp(4.5rem, 13vw, 9.5rem);
+      font-weight: 900; letter-spacing: -0.04em; line-height: 0.92;
+      animation: marquee 28s linear infinite;
+    }
+    .k-row.rev { animation-direction: reverse; animation-duration: 34s; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .hero-inner { position: relative; z-index: 2; max-width: 680px; }
+    .hero-icon {
+      width: 92px; height: 92px; border-radius: 26px; object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.16);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.75);
+      margin-bottom: 20px;
+    }
+    .ver-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      padding: 6px 14px; border-radius: 999px;
+      font-size: 0.78rem; font-weight: 700; color: #d4d7e3;
+      margin-bottom: 16px;
+    }
+    .ver-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; }
+    .hero h1 {
+      font-size: clamp(3rem, 9vw, 5.2rem);
+      font-weight: 900; letter-spacing: -0.045em; line-height: 0.98;
+      margin-bottom: 26px;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #fff; color: #050507; text-decoration: none;
+      font-weight: 800; font-size: 0.96rem;
+      padding: 15px 34px; border-radius: 999px;
+      box-shadow: 0 12px 32px rgba(255,255,255,0.16);
+      transition: transform .18s ease, opacity .18s ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); opacity: 0.92; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.06); color: #fff; text-decoration: none;
+      border: 1px solid var(--border); font-weight: 700; font-size: 0.92rem;
+      padding: 15px 26px; border-radius: 999px;
+      transition: background .18s ease;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+
+    /* Ribbon Ticker */
+    .ticker {
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: rgba(15,16,20,0.75); padding: 12px 0; overflow: hidden;
+      white-space: nowrap; margin-bottom: 56px;
+    }
+    .ticker-track {
+      display: inline-block; font-size: 0.8rem; font-weight: 800;
+      letter-spacing: 0.16em; color: var(--muted);
+      animation: marquee 22s linear infinite;
+    }
+
+    .section { max-width: 960px; margin: 0 auto 68px; padding: 0 20px; }
+    .sec-label {
+      font-size: 0.74rem; font-weight: 800; letter-spacing: 0.14em;
+      color: var(--muted); text-transform: uppercase; text-align: center;
+      margin-bottom: 10px;
+    }
+    .sec-title {
+      font-size: clamp(1.9rem, 5vw, 2.8rem); font-weight: 900;
+      letter-spacing: -0.035em; text-align: center; margin-bottom: 28px;
+    }
+
+    /* Live Metrics */
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    }
+    .stat {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 24px; padding: 26px 16px; text-align: center;
+    }
+    .stat b { display: block; font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 900; letter-spacing: -0.03em; }
+    .stat span { font-size: 0.82rem; color: var(--muted); font-weight: 600; margin-top: 4px; display: block; }
+
+    /* Interactive App Tour Phone */
+    .tour-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 18px;
+    }
+    .tour-phone {
+      width: min(300px, 84vw);
+      background: #09090d;
+      border: 2px solid rgba(255,255,255,0.14);
+      border-radius: 38px;
+      padding: 12px 10px 14px;
+      box-shadow: 0 28px 70px rgba(0,0,0,0.75);
+      position: relative;
+    }
+    .tour-notch {
+      width: 68px; height: 6px; border-radius: 99px;
+      background: rgba(255,255,255,0.14); margin: 0 auto 10px;
+    }
+    .tour-screen {
+      position: relative; border-radius: 26px; overflow: hidden;
+      background: #000; aspect-ratio: 9 / 19;
+    }
+    .tour-screen img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0; transform: scale(1.03);
+      transition: opacity .32s ease, transform .36s ease;
+    }
+    .tour-screen img.active { opacity: 1; transform: scale(1); }
+    .tour-bar {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+      background: rgba(20, 21, 28, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 999px; padding: 5px;
+      width: min(320px, 88vw);
+    }
+    .tour-bar button {
+      border: 0; background: transparent; color: var(--muted);
+      font-weight: 800; font-size: 0.82rem; padding: 10px 8px;
+      border-radius: 999px; cursor: pointer; transition: all .2s ease;
+    }
+    .tour-bar button.active { background: #fff; color: #050507; }
+
+    /* Feedback & Bug Panel */
+    .panel {
+      max-width: 620px; margin: 0 auto;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 28px; padding: 26px;
+    }
+    .seg {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+      background: #08080c; padding: 5px; border-radius: 14px;
+      border: 1px solid var(--border); margin-bottom: 16px;
+    }
+    .seg button {
+      border: 0; background: transparent; color: var(--muted);
+      font-weight: 700; font-size: 0.88rem; padding: 11px;
+      border-radius: 10px; cursor: pointer; transition: all .22s ease;
+    }
+    .seg button.active { background: #fff; color: #050507; }
+    .field { margin-bottom: 12px; }
+    .field input, .field textarea {
+      width: 100%; background: #08080c; color: #fff;
+      border: 1px solid var(--border); border-radius: 14px;
+      padding: 13px 15px; font-size: 0.92rem; font-family: inherit;
+      outline: none; transition: border-color .18s ease;
+    }
+    .field input:focus, .field textarea:focus { border-color: rgba(255,255,255,0.4); }
+    .bug-wrap {
+      max-height: 0; opacity: 0; overflow: hidden;
+      transition: max-height .28s ease, opacity .24s ease, margin .24s ease;
+    }
+    .bug-wrap.open { max-height: 82px; opacity: 1; margin-bottom: 12px; }
+    .btn-submit {
+      width: 100%; border: 0; background: #fff; color: #050507;
+      font-weight: 800; font-size: 0.94rem; padding: 13px;
+      border-radius: 14px; cursor: pointer;
+    }
+    .msg { margin-top: 10px; font-size: 0.85rem; color: #4ade80; min-height: 18px; text-align: center; }
+
+    /* Footer */
+    .footer {
+      max-width: 960px; margin: 0 auto; padding: 24px 20px 56px;
+      border-top: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 14px; color: var(--muted); font-size: 0.86rem;
+    }
+    .ig-link {
+      color: #fff; text-decoration: none; font-weight: 700;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 9px 18px; border-radius: 999px;
+    }
+
+    /* Hidden Admin Modal (3x logo tap) */
+    .modal-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.78);
+      display: none; align-items: center; justify-content: center; z-index: 99;
+      backdrop-filter: blur(10px);
+    }
+    .modal-bg.show { display: flex; }
+    .modal-card {
+      width: min(340px, 90vw); background: #13141c; border: 1px solid var(--border);
+      border-radius: 24px; padding: 24px; text-align: center;
+    }
+    .modal-card h3 { margin-bottom: 14px; font-size: 1.12rem; }
+    .modal-card a {
+      display: block; background: #fff; color: #000; font-weight: 800;
+      text-decoration: none; padding: 12px; border-radius: 12px; margin-bottom: 10px;
+    }
+    .modal-card button {
+      background: transparent; border: 0; color: var(--muted);
+      cursor: pointer; font-weight: 600; padding: 6px;
+    }
+
+    @media (max-width: 640px) {
+      .nav-links a.hide-sm { display: none; }
+      .stats { gap: 8px; }
+      .stat { padding: 18px 8px; }
+      .btn-primary, .btn-ghost { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-wrap">
+    <nav class="nav">
+      <div class="brand" id="logoTap">
+        <img src="/assets/swara_icon.jpg" alt="Swara" />
+        <span>Swara</span>
+      </div>
+      <div class="nav-links">
+        <a href="#tour" class="hide-sm">Pratinjau</a>
+        <a href="#stats" class="hide-sm">Statistik</a>
+        <a href="#feedback" class="hide-sm">Masukan</a>
+        <a href="/api/public/download" class="cta">Unduh</a>
+      </div>
+    </nav>
+  </div>
+
+  <header class="hero">
+    <div class="bg-kinetic" aria-hidden="true">
+      <div class="k-row">SWARA SWARA SWARA SWARA SWARA SWARA SWARA SWARA</div>
+      <div class="k-row rev">MUSIC MUSIC MUSIC MUSIC MUSIC MUSIC MUSIC MUSIC</div>
+    </div>
+    <div class="hero-inner">
+      <img class="hero-icon" src="/assets/swara_icon.jpg" alt="Swara" />
+      <div class="ver-chip"><span class="ver-dot"></span><span id="verText">Swara v4.8.8 · Android &amp; Tablet</span></div>
+      <h1>Swara</h1>
+      <div class="hero-actions">
+        <a class="btn-primary" href="/api/public/download">Unduh APK</a>
+        <a class="btn-ghost" href="#tour">Lihat Tampilan</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      SWARA • ANDROID &amp; TABLET • SWARA • ANDROID &amp; TABLET • SWARA • ANDROID &amp; TABLET • SWARA • ANDROID &amp; TABLET • SWARA • ANDROID &amp; TABLET •
+    </div>
+  </div>
+
+  <section class="section" id="tour">
+    <div class="sec-label">Pratinjau</div>
+    <h2 class="sec-title">Tampilan Aplikasi</h2>
+    <div class="tour-wrap">
+      <div class="tour-phone">
+        <div class="tour-notch"></div>
+        <div class="tour-screen">
+          <img id="img0" class="active" src="/assets/preview_home.jpg" alt="Beranda" />
+          <img id="img1" src="/assets/preview_search.jpg" alt="Pemutar" />
+          <img id="img2" src="/assets/preview_profile.jpg" alt="Profil" />
+        </div>
+      </div>
+      <div class="tour-bar">
+        <button id="tBtn0" class="active" type="button" onclick="setTour(0)">Beranda</button>
+        <button id="tBtn1" type="button" onclick="setTour(1)">Pemutar</button>
+        <button id="tBtn2" type="button" onclick="setTour(2)">Profil</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="stats">
+    <div class="sec-label">Live</div>
+    <h2 class="sec-title">Statistik</h2>
+    <div class="stats">
+      <div class="stat"><b id="sUsers">0</b><span>Pengguna</span></div>
+      <div class="stat"><b id="sDownloads">0</b><span>Total Unduhan</span></div>
+      <div class="stat"><b id="sMinutes">0</b><span>Menit Dengar</span></div>
+    </div>
+  </section>
+
+  <section class="section" id="feedback">
+    <div class="sec-label">Dukungan</div>
+    <h2 class="sec-title">Masukan &amp; Bug</h2>
+    <div class="panel">
+      <div class="seg">
+        <button id="tabSaran" class="active" type="button" onclick="setMode('saran')">Masukan &amp; Saran</button>
+        <button id="tabBug" type="button" onclick="setMode('bug')">Lapor Bug</button>
+      </div>
+      <form id="fbForm" onsubmit="sendFeedback(event)">
+        <div class="field">
+          <input id="fbName" type="text" placeholder="Nama (opsional)" />
+        </div>
+        <div class="bug-wrap" id="bugWrap">
+          <div class="field" style="margin-bottom:0">
+            <input id="fbDevice" type="text" placeholder="Tipe HP / Tablet" />
+          </div>
+        </div>
+        <div class="field">
+          <textarea id="fbText" rows="3" placeholder="Tulis saran..." required></textarea>
+        </div>
+        <button class="btn-submit" type="submit">Kirim</button>
+        <div class="msg" id="fbMsg"></div>
+      </form>
+    </div>
+  </section>
+
+  <section id="donasi" style="padding:20px 16px 48px;">
+    <div class="panel" style="text-align:center;">
+      <div style="font-size:1.15rem;font-weight:800;margin-bottom:6px;">Donasi QRIS</div>
+      <div style="font-size:0.86rem;color:var(--muted);margin-bottom:18px;">QRIS ViperCell</div>
+      <div style="display:inline-block;padding:12px;border-radius:20px;background:#fff;margin-bottom:16px;">
+        <img src="/assets/qris_vipercell.jpg" alt="QRIS ViperCell" style="display:block;width:min(240px,68vw);height:auto;border-radius:12px;">
+      </div>
+      <div>
+        <a href="/assets/qris_vipercell.jpg" download="QRIS-Swara-ViperCell.jpg" style="display:inline-block;background:#fff;color:#050507;text-decoration:none;font-weight:800;font-size:0.88rem;padding:11px 22px;border-radius:999px;">Simpan QRIS</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Swara</span>
+    <a class="ig-link" href="https://www.instagram.com/t3ves_?evlk=MXJuZHQybmxjMTV4NA==" target="_blank" rel="noopener">@t3ves_</a>
+  </footer>
+
+  <div class="modal-bg" id="adminModal">
+    <div class="modal-card">
+      <h3>Panel Admin</h3>
+      <a href="/admin">Buka Admin</a>
+      <button type="button" onclick="document.getElementById('adminModal').classList.remove('show')">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    function setTour(idx) {
+      for (let i = 0; i < 3; i++) {
+        document.getElementById('img' + i).classList.toggle('active', i === idx);
+        document.getElementById('tBtn' + i).classList.toggle('active', i === idx);
+      }
+    }
+
+    let mode = 'saran';
+    function setMode(m) {
+      mode = m;
+      document.getElementById('tabSaran').classList.toggle('active', m === 'saran');
+      document.getElementById('tabBug').classList.toggle('active', m === 'bug');
+      document.getElementById('bugWrap').classList.toggle('open', m === 'bug');
+      document.getElementById('fbText').placeholder = m === 'bug' ? 'Tulis kendala bug...' : 'Tulis saran...';
+    }
+
+    let taps = 0, tapTimer = null;
+    document.getElementById('logoTap').addEventListener('click', () => {
+      taps++;
+      clearTimeout(tapTimer);
+      if (taps >= 3) {
+        taps = 0;
+        document.getElementById('adminModal').classList.add('show');
+      } else {
+        tapTimer = setTimeout(() => { taps = 0; }, 900);
+      }
+    });
+
+    async function loadStats() {
+      try {
+        const r = await fetch('/api/public/stats');
+        const d = await r.json();
+        if (!d.ok) return;
+        document.getElementById('sUsers').textContent = (d.users || 0).toLocaleString('id-ID');
+        document.getElementById('sDownloads').textContent = (d.downloads || 0).toLocaleString('id-ID');
+        document.getElementById('sMinutes').textContent = (d.totalListeningMin != null ? d.totalListeningMin : Math.floor((d.totalListeningSec || 0) / 60)).toLocaleString('id-ID');
+        if (d.version) {
+          document.getElementById('verText').textContent = 'Swara v' + d.version + ' · Android & Tablet';
+        }
+      } catch (_) {}
+    }
+
+    async function sendFeedback(e) {
+      e.preventDefault();
+      const msgEl = document.getElementById('fbMsg');
+      msgEl.textContent = 'Mengirim...';
+      try {
+        const payload = {
+          category: mode,
+          senderName: document.getElementById('fbName').value.trim(),
+          deviceNote: mode === 'bug' ? document.getElementById('fbDevice').value.trim() : '',
+          message: document.getElementById('fbText').value.trim(),
+        };
+        const r = await fetch('/api/public/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const d = await r.json();
+        if (d.ok) {
+          msgEl.textContent = 'Terkirim.';
+          document.getElementById('fbForm').reset();
+        } else {
+          msgEl.textContent = d.error || 'Gagal mengirim.';
+        }
+      } catch (_) {
+        msgEl.textContent = 'Gagal terhubung.';
+      }
+    }
+
+    loadStats();
+    setInterval(loadStats, 15000);
+  </script>
+</body>
+</html>

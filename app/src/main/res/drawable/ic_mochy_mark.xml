@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Solid white Play-S mark matching official swara_icon.jpg -->
+    <!-- Upper-left solid wedge above the S-wave -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M31,20 C31,14.5 36.8,11.2 41.6,13.9 L51.5,19.6 C44.2,23.8 39.8,31.2 39.8,40.2 C39.8,44.4 40.7,47.8 41.8,50.5 L31,45.5 Z" />
+    <!-- Lower-left & bottom-right solid wedge below the S-wave -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M31,56.5 C34.5,58.2 37.8,61.8 41.5,65.2 C47.5,70.6 55.6,68.6 57.5,61.0 C58.6,56.5 56.2,52.0 52.8,47.5 C48.2,41.4 46.8,36.2 49.5,31.5 C52.2,26.8 58.0,26.5 63.0,30.5 L77.5,39.2 C82.5,42.2 82.5,49.4 77.5,52.4 L41.6,73.5 C36.8,76.3 31,72.9 31,67.4 Z" />
+    <!-- Inner flowing S-wave ribbon -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="6.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M24,49.5 C31.5,49.5 34.5,55.5 39.2,60.5 C44.5,66.2 52.5,63.8 52.5,55.8 C52.5,49.2 44.5,45.5 44.5,37.8 C44.5,30.5 52.0,27.5 58.2,32.2 C62.5,35.5 66.2,39.5 72.5,42.5" />
+</vector>
