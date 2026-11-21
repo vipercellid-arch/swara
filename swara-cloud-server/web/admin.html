@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Swara Admin</title>
+  <link rel="icon" href="/assets/swara_icon.jpg">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    :root { --bg:#060609; --side:#0c0c11; --card:#111117; --line:rgba(255,255,255,0.09); --muted:#a1a1aa; --green:#22c55e; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:#fff; font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif; min-height:100vh; }
+    .login-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+    .login-card { width:min(390px,100%); background:var(--card); border:1px solid var(--line); border-radius:28px; padding:32px; text-align:center; }
+    .login-card img { width:58px; height:58px; border-radius:16px; margin-bottom:14px; }
+    .login-card h1 { margin:0 0 6px; font-size:1.35rem; }
+    .login-card p { margin:0 0 22px; color:var(--muted); font-size:0.88rem; }
+    .g-wrap { display:flex; justify-content:center; min-height:44px; }
+    .err { margin-top:12px; color:#f87171; font-size:0.84rem; min-height:18px; }
+
+    .layout { display:none; min-height:100vh; grid-template-columns: 240px 1fr; }
+    @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+    .sidebar {
+      background: var(--side); border-right: 1px solid var(--line);
+      padding: 20px 14px; display:flex; flex-direction:column; gap:6px;
+    }
+    @media (max-width: 860px) {
+      .sidebar { border-right:0; border-bottom:1px solid var(--line); flex-direction:row; overflow-x:auto; padding:12px; align-items:center; }
+      .side-brand, .side-foot { display:none; }
+    }
+    .side-brand { display:flex; align-items:center; gap:10px; padding:6px 10px 18px; font-weight:900; font-size:1.05rem; }
+    .side-brand img { width:34px; height:34px; border-radius:10px; }
+    .nav-item {
+      border:0; background:transparent; color:var(--muted); font-family:inherit;
+      font-weight:700; font-size:0.86rem; padding:11px 14px; border-radius:13px;
+      cursor:pointer; text-align:left; white-space:nowrap; transition:all .18s ease;
+    }
+    .nav-item:hover { background:rgba(255,255,255,0.06); color:#fff; }
+    .nav-item.active { background:#fff; color:#060609; }
+    .side-foot { margin-top:auto; padding-top:14px; border-top:1px solid var(--line); }
+
+    .main { padding: 20px 22px 48px; max-width: 1180px; width:100%; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
+    .status-badge { display:inline-flex; align-items:center; gap:7px; padding:6px 12px; border-radius:999px; background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.28); color:#4ade80; font-size:0.78rem; font-weight:700; }
+    .dot { width:7px; height:7px; border-radius:50%; background:var(--green); }
+    .btn { border:1px solid var(--line); background:#181820; color:#fff; border-radius:12px; padding:9px 14px; font-size:0.84rem; font-weight:700; cursor:pointer; font-family:inherit; }
+    .btn.primary { background:#fff; color:#060609; border-color:#fff; }
+    .btn.danger { background:#2a1215; color:#fca5a5; border-color:rgba(248,113,113,0.3); }
+    .btn.sm { padding:6px 10px; font-size:0.76rem; }
+
+    .pane { display:none; }
+    .pane.active { display:block; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(165px,1fr)); gap:12px; margin-bottom:18px; }
+    .kpi { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:16px; }
+    .kpi .k { font-size:0.78rem; color:var(--muted); margin-bottom:6px; }
+    .kpi .v { font-size:1.55rem; font-weight:900; letter-spacing:-0.4px; }
+
+    .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:20px; margin-bottom:16px; }
+    .card h2 { margin:0 0 14px; font-size:1.02rem; }
+    .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media (max-width:680px) { .row2 { grid-template-columns:1fr; } }
+    .field { margin-bottom:11px; }
+    .field label { display:block; font-size:0.78rem; color:var(--muted); margin-bottom:5px; }
+    .field input, .field textarea, .field select { width:100%; background:#08080c; color:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 13px; font-size:0.88rem; font-family:inherit; outline:none; }
+    .tbl-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+    th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); }
+    th { color:var(--muted); font-weight:600; font-size:0.76rem; }
+    .u-cell { display:flex; align-items:center; gap:9px; }
+    .u-cell img { width:28px; height:28px; border-radius:50%; object-fit:cover; background:#222; }
+    .pill { display:inline-block; padding:3px 9px; border-radius:999px; font-size:0.74rem; font-weight:700; background:rgba(255,255,255,0.09); }
+    .pill.bug { background:rgba(248,113,113,0.16); color:#fca5a5; }
+    .pill.saran { background:rgba(34,197,94,0.16); color:#86efac; }
+    .banner-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; }
+    .b-card { background:#0b0b10; border:1px solid var(--line); border-radius:16px; padding:12px; }
+    .b-card img { width:100%; height:115px; object-fit:cover; border-radius:10px; background:#17171f; margin-bottom:8px; }
+    .status-msg { margin-top:10px; font-size:0.84rem; color:#4ade80; min-height:18px; }
+    .chips { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
+    .chip { border:1px solid var(--line); background:transparent; color:var(--muted); padding:6px 12px; border-radius:999px; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; }
+    .chip.active { background:#fff; color:#060609; border-color:#fff; }
+  </style>
+</head>
+<body>
+  <div class="login-wrap" id="loginView">
+    <div class="login-card">
+      <img src="/assets/swara_icon.jpg" alt="Swara">
+      <h1>Swara Admin</h1>
+      <p>Masuk dengan akun Google admin resmi</p>
+      <div class="g-wrap" id="googleBtn"></div>
+      <div class="err" id="loginErr"></div>
+    </div>
+  </div>
+
+  <div class="layout" id="appView">
+    <aside class="sidebar">
+      <div class="side-brand"><img src="/assets/swara_icon.jpg" alt="Swara"><span>Swara Admin</span></div>
+      <button class="nav-item active" onclick="openTab('overview', this)">Ringkasan</button>
+      <button class="nav-item" onclick="openTab('users', this)">Pengguna</button>
+      <button class="nav-item" onclick="openTab('release', this)">Rilis & APK</button>
+      <button class="nav-item" onclick="openTab('media', this)">Banner & Preview</button>
+      <button class="nav-item" onclick="openTab('feedback', this)">Masukan & Bug</button>
+      <button class="nav-item" onclick="openTab('smtp', this)">Email & Swara Wrap</button>
+      <div class="side-foot">
+        <div id="adminEmail" style="font-size:0.76rem;color:var(--muted);margin-bottom:8px;word-break:break-all;"></div>
+        <button class="btn danger" style="width:100%;" onclick="logoutAdmin()">Keluar</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="status-badge"><span class="dot"></span><span id="uptimeText">Server Aktif</span></div>
+        <div style="display:flex;gap:8px;">
+          <a href="/" target="_blank" class="btn" style="text-decoration:none;">Buka Web</a>
+          <button class="btn" onclick="loadOverview()">Segarkan</button>
+        </div>
+      </div>
+
+      <div class="pane active" id="pane-overview">
+        <div class="kpi-grid">
+          <div class="kpi"><div class="k">Total Pengguna</div><div class="v" id="stUsers">0</div></div>
+          <div class="kpi"><div class="k">Total Unduhan</div><div class="v" id="stDownloads">0</div></div>
+          <div class="kpi"><div class="k">Total Menit Dengar</div><div class="v" id="stMinutes">0</div></div>
+          <div class="kpi"><div class="k">Total Pemutaran</div><div class="v" id="stPlays">0</div></div>
+          <div class="kpi"><div class="k">Masukan & Bug</div><div class="v" id="stFeedback">0</div></div>
+          <div class="kpi"><div class="k">Versi Aktif</div><div class="v" id="stVer">-</div></div>
+        </div>
+        <div class="row2">
+          <div class="card">
+            <h2>Pengguna Terbaru</h2>
+            <div id="ovUsers"></div>
+          </div>
+          <div class="card">
+            <h2>Masukan Terbaru</h2>
+            <div id="ovFb"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pane" id="pane-users">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+            <h2 style="margin:0;">Pengguna Terdaftar</h2>
+            <input id="userSearch" placeholder="Cari nama atau email..." oninput="renderUsers()" style="max-width:260px;background:#08080c;color:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:0.84rem;">
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Pengguna</th><th>Email</th><th>Waktu Dengar</th><th>Putar</th><th>Aksi</th></tr></thead>
+              <tbody id="usersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="pane" id="pane-release">
+        <div class="card">
+          <h2>Rilis & Versi APK (Android & Swara TV)</h2>
+          <div class="row2">
+            <div class="field"><label>Versi Terbaru</label><input id="relVer" placeholder="4.9.4.1"></div>
+            <div class="field"><label>Version Code</label><input id="relCode" type="number" placeholder="495"></div>
+          </div>
+          <div class="row2">
+            <div class="b-card">
+              <div style="font-weight:800;margin-bottom:10px;">Swara Android (HP & Tablet)</div>
+              <div class="field"><label>Link Unduhan (VPS / MediaFire / GitHub)</label><input id="relUrl" placeholder="https://swaraapp.my.id/downloads/swara-latest.apk"></div>
+              <div class="field"><label>Unggah .apk Langsung ke VPS</label><input id="apkFileAndroid" type="file" accept=".apk"></div>
+              <button class="btn" onclick="uploadApkDirect('android')">Unggah APK Android</button>
+              <div class="status-msg" id="apkMsgAndroid"></div>
+            </div>
+            <div class="b-card">
+              <div style="font-weight:800;margin-bottom:10px;">Swara TV (Google TV / Android TV)</div>
+              <div class="field"><label>Link Unduhan TV (VPS / MediaFire / GitHub)</label><input id="relUrlTv" placeholder="https://swaraapp.my.id/downloads/swara-tv-latest.apk"></div>
+              <div class="field"><label>Unggah .apk TV Langsung ke VPS</label><input id="apkFileTv" type="file" accept=".apk"></div>
+              <button class="btn" onclick="uploadApkDirect('tv')">Unggah APK TV</button>
+              <div class="status-msg" id="apkMsgTv"></div>
+            </div>
+          </div>
+          <div class="field" style="margin-top:12px;"><label>Catatan Pembaruan</label><textarea id="relLog" rows="3"></textarea></div>
+          <button class="btn primary" onclick="saveRelease()">Simpan Rilis</button>
+          <div class="status-msg" id="relMsg"></div>
+        </div>
+      </div>
+
+      <div class="pane" id="pane-media">
+        <div class="card">
+          <h2>Banner Sorotan Beranda (Maksimal 10)</h2>
+          <div class="banner-grid" id="bannerGrid"></div>
+          <div class="status-msg" id="mediaMsg"></div>
+        </div>
+        <div class="card">
+          <h2>5 Foto Preview Website (Langsung ke assets/)</h2>
+          <div class="banner-grid">
+            <div class="b-card"><div style="font-weight:700;margin-bottom:6px;">1. Pemutar</div><img id="prev_preview_player" src="/assets/preview_player.jpg"><input id="file_preview_player" type="file" accept="image/*" style="width:100%;margin-bottom:8px;"><button class="btn primary sm" style="width:100%;" onclick="uploadAsset('preview_player')">Unggah</button></div>
+            <div class="b-card"><div style="font-weight:700;margin-bottom:6px;">2. Beranda</div><img id="prev_preview_home" src="/assets/preview_home.jpg"><input id="file_preview_home" type="file" accept="image/*" style="width:100%;margin-bottom:8px;"><button class="btn primary sm" style="width:100%;" onclick="uploadAsset('preview_home')">Unggah</button></div>
+            <div class="b-card"><div style="font-weight:700;margin-bottom:6px;">3. Pencarian</div><img id="prev_preview_search" src="/assets/preview_search.jpg"><input id="file_preview_search" type="file" accept="image/*" style="width:100%;margin-bottom:8px;"><button class="btn primary sm" style="width:100%;" onclick="uploadAsset('preview_search')">Unggah</button></div>
+            <div class="b-card"><div style="font-weight:700;margin-bottom:6px;">4. Pustaka</div><img id="prev_preview_library" src="/assets/preview_library.jpg"><input id="file_preview_library" type="file" accept="image/*" style="width:100%;margin-bottom:8px;"><button class="btn primary sm" style="width:100%;" onclick="uploadAsset('preview_library')">Unggah</button></div>
+            <div class="b-card"><div style="font-weight:700;margin-bottom:6px;">5. Profil</div><img id="prev_preview_profile" src="/assets/preview_profile.jpg"><input id="file_preview_profile" type="file" accept="image/*" style="width:100%;margin-bottom:8px;"><button class="btn primary sm" style="width:100%;" onclick="uploadAsset('preview_profile')">Unggah</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pane" id="pane-feedback">
+        <div class="card">
+          <h2>Masukan & Laporan Bug</h2>
+          <div class="chips">
+            <button class="chip active" onclick="setFbFilter('all', this)">Semua</button>
+            <button class="chip" onclick="setFbFilter('saran', this)">Saran</button>
+            <button class="chip" onclick="setFbFilter('bug', this)">Bug</button>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Pengirim</th><th>Kategori</th><th>Perangkat</th><th>Pesan</th><th>Aksi</th></tr></thead>
+              <tbody id="fbBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="pane" id="pane-smtp">
+        <div class="card">
+          <h2>Email SMTP & Swara Wrap Otomatis</h2>
+          <div class="row2">
+            <div class="field"><label>SMTP Host</label><input id="smtpHost" placeholder="smtp.gmail.com"></div>
+            <div class="field"><label>SMTP Port</label><input id="smtpPort" type="number" placeholder="465"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Username / Email</label><input id="smtpUser" placeholder="email@gmail.com"></div>
+            <div class="field"><label>App Password</label><input id="smtpPass" type="password" placeholder="Kosongkan jika tidak diubah"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Nama Pengirim (From)</label><input id="smtpFrom" placeholder="Swara <no-reply@swaraapp.my.id>"></div>
+            <div class="field"><label>Keamanan</label><select id="smtpSec"><option value="ssl">SSL (465)</option><option value="starttls">STARTTLS (587)</option></select></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn primary" onclick="saveSmtp()">Simpan SMTP</button>
+            <button class="btn" onclick="testSmtp()">Kirim Test Email</button>
+            <button class="btn" onclick="sendMonthlyRecapNow()">Kirim Email Swara Wrap Sekarang</button>
+          </div>
+          <div class="status-msg" id="smtpMsg"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const TOKEN_KEY = 'swara_admin_token';
+    const getToken = () => localStorage.getItem(TOKEN_KEY) || '';
+    let allUsers = [], allFeedback = [], fbFilter = 'all';
+
+    function openTab(id, btn) {
+      document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.getElementById('pane-' + id).classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+    function esc(s) { return String(s || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+    function buildBannerSlots(existingBanners) {
+      const bySlot = {};
+      (existingBanners || []).forEach(b => { bySlot[b.slot] = b; });
+      const grid = document.getElementById('bannerGrid');
+      let html = '';
+      for (let i = 1; i <= 10; i++) {
+        const slot = 'banner_' + i;
+        const b = bySlot[slot] || {};
+        html += `<div class="b-card">
+          <div style="font-weight:700;margin-bottom:6px;">Banner ${i}</div>
+          <img id="prev_${slot}" src="${b.imageUrl || '/assets/' + slot + '.jpg'}" onerror="this.style.opacity=0.2">
+          <div class="field"><input id="title_${slot}" value="${esc(b.title || '')}" placeholder="Judul (opsional)"></div>
+          <div class="field"><input id="sub_${slot}" value="${esc(b.subtitle || '')}" placeholder="Subjudul (opsional)"></div>
+          <div class="field"><input id="file_${slot}" type="file" accept="image/*"></div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn primary sm" style="flex:1;" onclick="uploadAsset('${slot}')">Unggah</button>
+            <button class="btn danger sm" onclick="deleteBanner('${slot}')">Hapus</button>
+          </div>
+        </div>`;
+      }
+      grid.innerHTML = html;
+    }
+
+    function renderUsers() {
+      const q = (document.getElementById('userSearch')?.value || '').trim().toLowerCase();
+      const list = allUsers.filter(u => !q || (u.display_name || '').toLowerCase().includes(q) || (u.username || '').toLowerCase().includes(q));
+      document.getElementById('usersBody').innerHTML = list.map(u => {
+        const hrs = Math.floor((u.total_listening_sec || 0) / 3600);
+        const mins = Math.floor(((u.total_listening_sec || 0) % 3600) / 60);
+        const av = u.avatar_url ? `<img src="${esc(u.avatar_url)}" alt="">` : `<img src="/assets/swara_icon.jpg" alt="">`;
+        return `<tr><td><div class="u-cell">${av}<span>${esc(u.display_name || u.username)}</span></div></td><td>${esc(u.username)}</td><td>${hrs}j ${mins}m</td><td>${u.total_plays || 0}</td><td><button class="btn danger sm" onclick="deleteUser(${u.id})">Hapus</button></td></tr>`;
+      }).join('');
+    }
+
+    function setFbFilter(f, btn) {
+      fbFilter = f;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderFeedback();
+    }
+
+    function renderFeedback() {
+      const list = allFeedback.filter(f => fbFilter === 'all' || f.category === fbFilter);
+      document.getElementById('fbBody').innerHTML = list.map(f => {
+        const cls = f.category === 'bug' ? 'bug' : 'saran';
+        return `<tr><td>${esc(f.sender_name)}</td><td><span class="pill ${cls}">${esc(f.category)}</span></td><td>${esc(f.amount_note || '-')}</td><td>${esc(f.message)}</td><td><button class="btn danger sm" onclick="deleteFeedback(${f.id})">Hapus</button></td></tr>`;
+      }).join('');
+    }
+
+    async function initGoogleLogin() {
+      try {
+        const r = await fetch('/api/public/stats');
+        const d = await r.json();
+        const cid = d.googleClientId || '';
+        if (!cid || !window.google) { setTimeout(initGoogleLogin, 500); return; }
+        google.accounts.id.initialize({
+          client_id: cid,
+          callback: async (resp) => {
+            document.getElementById('loginErr').textContent = 'Memverifikasi...';
+            const lr = await fetch('/api/admin/google-login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ credential: resp.credential }) });
+            const ld = await lr.json();
+            if (ld.ok && ld.token) { localStorage.setItem(TOKEN_KEY, ld.token); loadOverview(); }
+            else { document.getElementById('loginErr').textContent = ld.error || 'Login ditolak.'; }
+          }
+        });
+        google.accounts.id.renderButton(document.getElementById('googleBtn'), { theme: 'filled_black', size: 'large', shape: 'pill' });
+      } catch (_) {}
+    }
+
+    async function loadOverview() {
+      const tok = getToken();
+      if (!tok) {
+        document.getElementById('loginView').style.display = 'flex';
+        document.getElementById('appView').style.display = 'none';
+        initGoogleLogin();
+        return;
+      }
+      const r = await fetch('/api/admin/overview', { headers: { 'Authorization': 'Bearer ' + tok } });
+      if (r.status === 401) { localStorage.removeItem(TOKEN_KEY); loadOverview(); return; }
+      const d = await r.json();
+      if (!d.ok) return;
+      document.getElementById('loginView').style.display = 'none';
+      document.getElementById('appView').style.display = 'grid';
+      document.getElementById('adminEmail').textContent = d.admin?.email || '';
+      const upH = Math.floor((d.stats?.uptimeSec || 0) / 3600);
+      document.getElementById('uptimeText').textContent = `Online · Uptime ${upH}j`;
+      document.getElementById('stUsers').textContent = (d.stats?.users || 0).toLocaleString('id-ID');
+      document.getElementById('stDownloads').textContent = (d.stats?.downloads || 0).toLocaleString('id-ID');
+      document.getElementById('stMinutes').textContent = (d.stats?.totalListeningMin || 0).toLocaleString('id-ID');
+      document.getElementById('stPlays').textContent = (d.stats?.totalPlays || 0).toLocaleString('id-ID');
+      document.getElementById('stFeedback').textContent = (d.stats?.feedbackCount || 0).toLocaleString('id-ID');
+      document.getElementById('stVer').textContent = 'v' + (d.release?.latestVersion || '-');
+
+      document.getElementById('relVer').value = d.release?.latestVersion || '';
+      document.getElementById('relCode').value = d.release?.versionCode || '';
+      document.getElementById('relUrl').value = d.release?.downloadUrl || '';
+      document.getElementById('relUrlTv').value = d.release?.downloadUrlTv || '';
+      document.getElementById('relLog').value = d.release?.changelog || '';
+
+      document.getElementById('smtpHost').value = d.smtp?.host || 'smtp.gmail.com';
+      document.getElementById('smtpPort').value = d.smtp?.port || 465;
+      document.getElementById('smtpUser').value = d.smtp?.user || '';
+      document.getElementById('smtpPass').value = '';
+      document.getElementById('smtpFrom').value = d.smtp?.fromAddr || '';
+      document.getElementById('smtpSec').value = d.smtp?.security || 'ssl';
+
+      allUsers = d.users || [];
+      allFeedback = d.feedback || [];
+      renderUsers();
+      renderFeedback();
+      buildBannerSlots(d.banners || []);
+      const _ts = Date.now();
+      ['preview_player','preview_home','preview_search','preview_library','preview_profile'].forEach(sl => {
+        const el = document.getElementById('prev_' + sl);
+        if (el) el.src = '/assets/' + sl + '.jpg?v=' + _ts;
+      });
+
+      document.getElementById('ovUsers').innerHTML = allUsers.slice(0, 5).map(u => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:0.84rem;"><span>${esc(u.display_name || u.username)}</span><span style="color:var(--muted);">${Math.floor((u.total_listening_sec||0)/60)} mnt</span></div>`).join('') || '<div style="color:var(--muted);font-size:0.84rem;">Belum ada</div>';
+      document.getElementById('ovFb').innerHTML = allFeedback.slice(0, 5).map(f => `<div style="padding:8px 0;border-bottom:1px solid var(--line);font-size:0.84rem;"><span class="pill ${f.category==='bug'?'bug':'saran'}">${esc(f.category)}</span> ${esc(f.message).slice(0, 65)}</div>`).join('') || '<div style="color:var(--muted);font-size:0.84rem;">Belum ada</div>';
+    }
+
+    async function deleteUser(id) {
+      if (!confirm('Hapus pengguna ini?')) return;
+      await fetch('/api/admin/delete-user', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() }, body: JSON.stringify({ id }) });
+      loadOverview();
+    }
+    async function deleteFeedback(id) {
+      await fetch('/api/admin/delete-feedback', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() }, body: JSON.stringify({ id }) });
+      loadOverview();
+    }
+    async function saveRelease() {
+      const msg = document.getElementById('relMsg'); msg.textContent = 'Menyimpan...';
+      const r = await fetch('/api/admin/release', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+        body: JSON.stringify({ latestVersion: document.getElementById('relVer').value.trim(), versionCode: Number(document.getElementById('relCode').value || 0), downloadUrl: document.getElementById('relUrl').value.trim(), downloadUrlTv: document.getElementById('relUrlTv').value.trim(), changelog: document.getElementById('relLog').value.trim() }),
+      });
+      const d = await r.json(); msg.textContent = d.ok ? 'Rilis disimpan.' : (d.error || 'Gagal.');
+    }
+    function uploadApkDirect(platform) {
+      const inp = document.getElementById(platform === 'tv' ? 'apkFileTv' : 'apkFileAndroid');
+      const msg = document.getElementById(platform === 'tv' ? 'apkMsgTv' : 'apkMsgAndroid');
+      if (!inp || !inp.files || !inp.files[0]) { msg.textContent = 'Pilih file .apk terlebih dahulu.'; return; }
+      const file = inp.files[0];
+      const ver = document.getElementById('relVer').value.trim() || '4.9.4.1';
+      const vcode = document.getElementById('relCode').value.trim() || '495';
+      msg.textContent = 'Mengunggah 0%...';
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `/api/ci/upload-apk?platform=${platform}&version=${encodeURIComponent(ver)}&versionCode=${encodeURIComponent(vcode)}`, true);
+      xhr.setRequestHeader('Authorization', 'Bearer ' + getToken());
+      xhr.setRequestHeader('Content-Type', 'application/vnd.android.package-archive');
+      xhr.upload.onprogress = (ev) => { if (ev.lengthComputable) msg.textContent = 'Mengunggah ' + Math.round((ev.loaded / ev.total) * 100) + '%...'; };
+      xhr.onload = () => {
+        try {
+          const d = JSON.parse(xhr.responseText);
+          if (d.ok) { msg.textContent = 'Berhasil (' + (d.sizeBytes / 1048576).toFixed(1) + ' MB)'; document.getElementById(platform === 'tv' ? 'relUrlTv' : 'relUrl').value = d.apkUrl; }
+          else { msg.textContent = d.error || 'Gagal.'; }
+        } catch (_) { msg.textContent = 'Error server (' + xhr.status + ').'; }
+      };
+      xhr.onerror = () => { msg.textContent = 'Koneksi terputus.'; };
+      xhr.send(file);
+    }
+    function uploadAsset(slot) {
+      const inp = document.getElementById('file_' + slot);
+      const msg = document.getElementById('mediaMsg');
+      if (!inp || !inp.files || !inp.files[0]) { msg.textContent = 'Pilih file gambar terlebih dahulu.'; return; }
+      msg.textContent = 'Mengunggah...';
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const payload = { slot, imageBase64: reader.result };
+        if (slot.startsWith('banner_')) {
+          payload.title = (document.getElementById('title_' + slot)?.value || '').trim();
+          payload.subtitle = (document.getElementById('sub_' + slot)?.value || '').trim();
+        }
+        const r = await fetch('/api/admin/upload-asset', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() }, body: JSON.stringify(payload) });
+        const d = await r.json();
+        if (d.ok) { msg.textContent = 'Tersimpan di assets/' + slot + '.jpg'; const img = document.getElementById('prev_' + slot); if (img) { img.style.opacity = 1; img.src = d.url; } }
+        else { msg.textContent = d.error || 'Gagal.'; }
+      };
+      reader.readAsDataURL(inp.files[0]);
+    }
+    async function deleteBanner(slot) {
+      const msg = document.getElementById('mediaMsg');
+      const r = await fetch('/api/admin/delete-banner', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() }, body: JSON.stringify({ slot }) });
+      const d = await r.json();
+      msg.textContent = d.ok ? 'Banner dihapus.' : (d.error || 'Gagal.');
+      if (d.ok) { const img = document.getElementById('prev_' + slot); if (img) img.style.opacity = 0.2; }
+    }
+    async function saveSmtp() {
+      const msg = document.getElementById('smtpMsg'); msg.textContent = 'Menyimpan...';
+      const r = await fetch('/api/admin/smtp', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+        body: JSON.stringify({ host: document.getElementById('smtpHost').value.trim(), port: Number(document.getElementById('smtpPort').value || 465), user: document.getElementById('smtpUser').value.trim(), pass: document.getElementById('smtpPass').value.trim(), fromAddr: document.getElementById('smtpFrom').value.trim(), security: document.getElementById('smtpSec').value }),
+      });
+      const d = await r.json(); msg.textContent = d.ok ? 'SMTP disimpan.' : (d.error || 'Gagal.');
+    }
+    async function testSmtp() {
+      const msg = document.getElementById('smtpMsg'); msg.textContent = 'Mengirim email tes...';
+      const r = await fetch('/api/admin/test-smtp', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() }, body: '{}' });
+      const d = await r.json(); msg.textContent = d.ok ? 'Email tes terkirim!' : (d.error || 'Gagal.');
+    }
+    async function sendMonthlyRecapNow() {
+      const msg = document.getElementById('smtpMsg'); msg.textContent = 'Mengirim Swara Wrap...';
+      const r = await fetch('/api/admin/send-recap', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() }, body: '{}' });
+      const d = await r.json(); msg.textContent = d.ok ? `Selesai: ${d.sent || 0} terkirim, ${d.failed || 0} gagal.` : (d.error || 'Gagal.');
+    }
+    async function logoutAdmin() {
+      await fetch('/api/admin/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + getToken() } }).catch(() => {});
+      localStorage.removeItem(TOKEN_KEY);
+      loadOverview();
+    }
+    loadOverview();
+  </script>
+</body>
+</html>
