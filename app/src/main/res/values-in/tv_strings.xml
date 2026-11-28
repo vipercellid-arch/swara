@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tv_hii">hai!</string>
+    <string name="tv_tap_anything">Tekan tombol apa saja untuk melanjutkan</string>
+    <string name="tv_welcome">selamat datang\ndi Swara</string>
+    <string name="tv_lets_sync">Hubungkan dengan HP kamu</string>
+    <string name="tv_skip_phone">Gunakan Swara tanpa HP</string>
+    <string name="tv_whats_your_name">Siapa nama panggilanmu?</string>
+    <string name="tv_continue">Lanjutkan</string>
+    <string name="tv_whos_listening">Siapa yang mendengarkan?</string>
+    <string name="tv_add_profile">Tambah profil</string>
+    <string name="tv_remove_profile">Hapus %1$s dari TV ini? Pustakanya di TV juga akan dihapus.</string>
+    <string name="tv_remove">Hapus</string>
+    <string name="tv_cancel">Batal</string>
+    <string name="tv_done">Selesai</string>
+    <string name="tv_your_phone">HP kamu</string>
+    <string name="tv_library">Pustaka</string>
+    <string name="tv_playing">Memutar</string>
+    <string name="tv_paused">Dijeda</string>
+    <string name="tv_loading">Memuat…</string>
+    <string name="tv_nothing_found">Tidak ditemukan. Coba kata lain.</string>
+    <string name="tv_nothing_here">Belum ada apa-apa di sini.</string>
+    <string name="tv_search_hint">Lagu, artis, album</string>
+    <string name="tv_recap_headline">Lihat Swara Wrap\nbulan ini!</string>
+    <string name="tv_view">Lihat</string>
+    <string name="tv_hello_again">Halo lagi, %1$s</string>
+    <string name="tv_play_something">Putar sesuatu</string>
+</resources>
