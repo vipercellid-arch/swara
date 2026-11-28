@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_greeting_hello_again">Halo lagi</string>
+    <string name="profile_greeting_hey">Hai</string>
+    <string name="profile_greeting_welcome_back">Selamat datang kembali</string>
+    <string name="profile_greeting_good_to_see_you">Senang bertemu lagi</string>
+    <string name="profile_greeting_fallback">Sobat</string>
+    <string name="profile_greeting_format">%1$s, %2$s!</string>
+    <string name="profile_pull_down_cd">Tarik ke bawah</string>
+    <string name="profile_swipe_down_hint">geser ke bawah di sini!!</string>
+    <string name="profile_scratch_hint">gosok!</string>
+    <string name="profile_come_back_later">kembali lagi nanti</string>
+    <string name="profile_swipe_up_to_close">geser ke atas untuk menutup</string>
+    <string name="profile_unit_hour_short">j</string>
+    <string name="profile_unit_minute_short">m</string>
+    <string name="profile_version_about_app">Versi &amp; tentang aplikasi</string>
+    <string name="profile_capsule_update">Perbarui</string>
+    <string name="profile_meet_dev_contributors">Kenali pembuat Swara</string>
+    <string name="profile_join_discord">Ikuti pembuat Swara</string>
+    <string name="profile_discord_cd">Komunitas</string>
+    <string name="profile_edit_title">Edit profil</string>
+    <string name="profile_data_privacy_hint">Swara menyimpan semua datamu secara lokal dan aman!</string>
+    <string name="profile_done">Selesai</string>
+    <string name="profile_username_label">nama pengguna</string>
+    <string name="profile_username_placeholder">nama pengguna</string>
+    <string name="profile_picture_label">foto profil</string>
+    <string name="profile_picture_cd">Foto profil</string>
+    <string name="profile_picture_add_cd">Tambah foto profil</string>
+    <string name="profile_tag"></string>
+    <string name="profile_edit_button">Edit profil</string>
+    <string name="profile_total_listens">Total pemutaran</string>
+    <string name="profile_listening_to">Sedang mendengarkan</string>
+    <string name="profile_recent_empty">Lagu yang kamu putar akan muncul di sini.</string>
+    <string name="profile_your_playlists">Playlist kamu</string>
+    <string name="profile_top_artists">Artis teratas</string>
+    <string name="profile_top_artists_empty">Artis yang paling sering kamu putar akan muncul di sini.</string>
+</resources>

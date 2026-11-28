@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rc_stats_done">Selesai</string>
+    <string name="rc_stats_title">Statistik</string>
+    <string name="rc_stats_year_recap_link">"Swara Wrap %1$d  &gt;"</string>
+    <string name="rc_stats_year_recap">Swara Wrap %1$d</string>
+    <string name="rc_stats_collapse_all">Tutup semua</string>
+    <string name="rc_stats_expand_all">Buka semua</string>
+    <string name="rc_stats_empty_title">Belum ada lagu diputar di %1$s.</string>
+    <string name="rc_stats_empty_hint">Putar beberapa lagu dan halaman ini akan terisi otomatis.</string>
+    <string name="rc_stats_often">Lihat seberapa sering kamu mendengarkan musik</string>
+    <string name="rc_stats_privacy">Semua data di sini disimpan lokal di perangkatmu dan tidak dikirim ke server mana pun.</string>
+    <string name="rc_stats_cd_profile">Profil</string>
+    <string name="rc_stats_cd_collapse">Tutup</string>
+    <string name="rc_stats_cd_expand">Buka</string>
+    <string name="rc_stats_total_month">Bulan ini kamu sudah mendengarkan selama</string>
+    <string name="rc_stats_total_year">Tahun ini kamu sudah mendengarkan selama</string>
+    <string name="rc_stats_every_day">Setiap hari di %1$s</string>
+    <string name="rc_stats_every_month">Setiap bulan di %1$d</string>
+    <string name="rc_stats_dominant_genre">Genre Dominan</string>
+    <string name="rc_stats_genre_loading">Menyusun genremu…</string>
+    <string name="rc_stats_genre_unavailable">Belum bisa memuat genre saat ini — butuh koneksi internet pertama kali.</string>
+    <string name="rc_stats_artist_love">Kamu paling suka mendengarkan artis ini</string>
+    <string name="rc_stats_song_number_one">Tanpa sadar, lagu ini jadi nomor #1 kamu</string>
+    <string name="rc_stats_song_from">%1$s dari %2$s</string>
+    <string name="rc_stats_weekday_month">Bulan ini kamu paling sering dengar musik tiap hari</string>
+    <string name="rc_stats_weekday_year">Tahun ini kamu paling sering dengar musik tiap hari</string>
+    <string name="rc_stats_totaling_hours">total %1$s jam</string>
+    <string name="rc_stats_hour_morning">Dan kamu suka mendengarkan pagi hari sekitar pukul</string>
+    <string name="rc_stats_hour_afternoon">Dan kamu suka mendengarkan siang hari sekitar pukul</string>
+    <string name="rc_stats_hour_evening">Dan kamu suka mendengarkan sore hari sekitar pukul</string>
+    <string name="rc_stats_hour_night">Dan kamu suka mendengarkan malam hari sekitar pukul</string>
+    <string name="rc_stats_totaling_hours_time">total %1$s jam di waktu ini!</string>
+    <string name="rc_stats_vs_more">↑ %1$d%% lebih banyak dari %2$s</string>
+    <string name="rc_stats_vs_less">↓ %1$d%% lebih sedikit dari %2$s</string>
+    <string name="rc_stats_vs_same">Hampir sama dengan %1$s</string>
+    <string name="rc_stats_vs_more_so_far">↑ %1$d%% lebih banyak dari %2$s sejauh ini</string>
+    <string name="rc_stats_vs_less_so_far">↓ %1$d%% lebih sedikit dari %2$s sejauh ini</string>
+    <string name="rc_stats_vs_same_so_far">Hampir sama dengan %1$s sejauh ini</string>
+    <string name="rc_stats_repeat_title">Kamu tidak berhenti memutar lagu ini</string>
+    <string name="rc_stats_new_title">Kamu menemukan musik baru sepanjang perjalanan</string>
+    <string name="rc_stats_new_share">%1$d%% waktu dengarmu adalah lagu yang belum pernah kamu putar sebelumnya</string>
+    <string name="rc_stats_new_best">Temuan baru terbaik</string>
+    <string name="rc_stats_habits_title">Kebiasaan mendengarkanmu</string>
+    <string name="rc_stats_habit_days">Hari mendengarkan</string>
+    <string name="rc_stats_habit_days_value">%1$d dari %2$d</string>
+    <string name="rc_stats_habit_days_average">Sekitar %1$s per hari</string>
+    <string name="rc_stats_habit_streak">Rekor beruntun</string>
+    <string name="rc_stats_habit_streak_hint">Hari berturut-turut dengan musik</string>
+    <string name="rc_stats_habit_session">Sesi terlama</string>
+    <string name="rc_stats_habit_biggest">Hari terbanyak</string>
+    <string name="rc_stats_date_at_time">%1$s pukul %2$s</string>
+    <string name="rc_stats_show_by">Tampilkan menurut</string>
+    <string name="rc_stats_kind_month">Bulan</string>
+    <string name="rc_stats_kind_year">Tahun</string>
+    <string name="rc_stats_selected">Dipilih</string>
+    <string name="rc_stats_what_year">Tahun berapa?</string>
+    <string name="rc_stats_what_month">Bulan apa?</string>
+    <string name="rc_stats_this_month_tag">(bulan ini)</string>
+    <string name="rc_story_hey">hai, %1$s!</string>
+    <string name="rc_story_journey_started">%1$s, kamu memulai perjalanan di Swara pada</string>
+    <string name="rc_story_journey_listening">dan kamu sudah mendengarkan musik dengan total waktu</string>
+    <string name="rc_story_journey_bye">sampai jumpa lagi, kawan!</string>
+    <string name="rc_story_tap">KETUK!</string>
+    <string name="rc_story_month_is">%1$s sudah</string>
+    <string name="rc_story_weekday_at_this_time">dan di periode ini,</string>
+    <string name="rc_story_more_than_second">lebih banyak dari urutan ke-2!</string>
+    <string name="rc_story_nothing_close">tidak ada yang menandingi!</string>
+    <string name="rc_story_again">Lagi
+dan
+lagi</string>
+    <string name="rc_story_this_artist">artis
+ini..</string>
+    <string name="rc_story_recognize_artist">Kenal
+artis ini?</string>
+    <string name="rc_story_favorite_artist">itu favoritmu periode ini!</string>
+    <string name="rc_story_x_plays">x Putar</string>
+    <string name="rc_story_might_recognize">Kamu pasti
+kenal lagu ini!</string>
+    <string name="rc_story_which_one">hmm, yang mana ya...</string>
+    <string name="rc_story_hear_melody">Dengar
+melodinya..</string>
+    <string name="rc_story_bill">Ini struk Swara Wrap kamu</string>
+    <string name="rc_story_receipt_recap">Swara Wrap %1$s</string>
+    <string name="rc_story_receipt_printed">dicetak pada %1$s/%2$s</string>
+    <string name="rc_story_receipt_top_artist">Artis Teratas</string>
+    <string name="rc_story_receipt_top_music">Lagu Teratas</string>
+    <string name="rc_story_receipt_total">Total : %1$s waktu dengar</string>
+    <string name="rc_story_receipt_counts">%1$d putar · %2$d lagu · %3$d artis</string>
+    <string name="rc_story_receipt_end">AKHIR STRUK</string>
+    <string name="rc_story_there_you_go">Ini dia</string>
+    <string name="rc_story_thats_your">Itulah Swara Wrap
+%1$s kamu!</string>
+    <string name="rc_story_tap_finish">KETUK UNTUK SELESAI</string>
+    <string name="rc_story_out_of_100" formatted="false">dari 100%</string>
+</resources>
