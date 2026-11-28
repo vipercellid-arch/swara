@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stage_title_first">Stage</string>
+    <string name="stage_title_second">3D</string>
+    <string name="stage_card_title">Stage 3D</string>
+    <string name="stage_card_sub">Memisahkan elemen lagu dan menempatkannya di sekelilingmu dalam ruang 3D.</string>
+    <string name="stage_open">Buka ruangan</string>
+    <string name="stage_toggle_sub">Vokal, bass, dan instrumen ditempatkan sesuai posisimu. Terbaik dengan headphone.</string>
+    <string name="stage_room_hint">Seret titik untuk memindahkan, dua jari untuk mengangkat, seret ruangan untuk memutar</string>
+    <string name="stage_reset_view">Reset tampilan</string>
+    <string name="stage_source_vocal">Vokal</string>
+    <string name="stage_source_center">Tengah</string>
+    <string name="stage_source_left">Kiri</string>
+    <string name="stage_source_right">Kanan</string>
+    <string name="stage_source_ambience">Ambience</string>
+    <string name="stage_source_sub">Sub Bass</string>
+    <string name="stage_source_numbered">%1$s %2$d</string>
+    <string name="stage_you">Kamu</string>
+    <string name="stage_add">Tambah sumber suara</string>
+    <string name="stage_add_title">Tambahkan ke ruangan</string>
+    <string name="stage_add_count">%1$d dari %2$d di ruangan</string>
+    <string name="stage_add_full">Semua %1$d sudah di ruangan</string>
+    <string name="stage_remove">Hapus</string>
+    <string name="stage_mute">Bisukan</string>
+    <string name="stage_solo">Solo</string>
+    <string name="stage_axis_side">Kiri ke kanan</string>
+    <string name="stage_axis_height">Ketinggian</string>
+</resources>

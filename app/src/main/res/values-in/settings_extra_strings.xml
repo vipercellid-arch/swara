@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="experimental_settings_title">Eksperimental</string>
+    <string name="experimental_import_sync_title">Impor &amp; sinkronisasi</string>
+    <string name="experimental_import_sync_desc">Bawa playlist dari layanan lain, sinkron YouTube, ekspor cadangan</string>
+    <string name="experimental_crossmix_tools_title">Alat uji CrossMix</string>
+    <string name="experimental_crossmix_tools_desc">Status langsung dan tombol lompat ke transisi</string>
+    <string name="experimental_crossmix_tools_detail">Menampilkan status langsung dan tombol uji transisi di CrossMix</string>
+    <string name="experimental_show_stream_source_title">Tampilkan sumber lagu</string>
+    <string name="experimental_show_stream_source_desc">Banner yang menampilkan sumber dan kualitas setiap lagu</string>
+    <string name="experimental_show_stream_source_detail">Menampilkan sumber lagu seperti YouTube atau Monochrome beserta kualitasnya</string>
+    <string name="experimental_force_playback_title">Paksa pemutaran</string>
+    <string name="experimental_force_playback_desc">Jika satu sumber gagal, otomatis coba sumber berikutnya</string>
+    <string name="experimental_force_playback_detail">Jika satu sumber tidak bisa memutar lagu, otomatis beralih ke sumber berikutnya</string>
+    <string name="experimental_force_yt_blur_title">Paksa blur YouTube 1500 px</string>
+    <string name="experimental_force_yt_blur_desc">Ganti default 120 px; dapat meningkatkan beban GPU</string>
+    <string name="experimental_force_recap_title">Paksa tampilkan Swara Wrap</string>
+    <string name="experimental_force_recap_desc">Buka Swara Wrap lebih awal</string>
+    <string name="experimental_force_recap_detail">Buka Swara Wrap di balik kartu profil Swara sekarang juga</string>
+    <string name="experimental_big_disc_title">Gaya piringan besar</string>
+    <string name="experimental_big_disc_desc">Piringan besar yang memenuhi layar</string>
+    <string name="experimental_music_haptics_title">Getaran musik (Haptics)</string>
+    <string name="experimental_music_haptics_desc">Bergetar mengikuti irama — memakai baterai</string>
+    <string name="experimental_haptic_sensitivity_title">Sensitivitas getaran</string>
+    <string name="experimental_haptic_sensitivity_low">Rendah</string>
+    <string name="experimental_haptic_sensitivity_medium">Sedang</string>
+    <string name="experimental_haptic_sensitivity_high">Tinggi</string>
+</resources>

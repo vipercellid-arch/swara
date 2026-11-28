@@ -1,0 +1,24 @@
+{
+  "name": "swara-desktop",
+  "version": "1.0.2",
+  "description": "Swara Desktop untuk Windows",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win portable --x64"
+  },
+  "build": {
+    "appId": "com.swara.desktop",
+    "productName": "Swara",
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "artifactName": "Swara-Windows-v1.0.2.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "^32.2.0",
+    "electron-builder": "^25.1.8"
+  }
+}
