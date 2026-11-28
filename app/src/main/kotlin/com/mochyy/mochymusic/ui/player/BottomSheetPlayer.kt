@@ -1155,7 +1155,7 @@ private fun PlayerSheet(
                     pages = transition,
                     turntable = isTurntable,
                     coverStyle = if (isFlagship && shownCoverStyle == PlayerCoverStyle.EDGE_TO_EDGE) PlayerCoverStyle.SQUARED else shownCoverStyle,
-                    backgroundStyle = if (isFlagship && backgroundStyle == PlayerBackgroundStyle.DEFAULT) PlayerBackgroundStyle.BLUR else backgroundStyle,
+                    backgroundStyle = if (isFlagship && backgroundStyle == PlayerBackgroundStyle.SOLID) PlayerBackgroundStyle.AMBIENT else backgroundStyle,
                     ambient = ambient,
                     pureBlack = pureBlack,
                     editMode = studioEngaged,
