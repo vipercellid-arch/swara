@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="builtin_module_apple_description">Putar langganan Apple Music di Swara (AAC 256) lengkap dengan semua efek Lab Audio</string>
+    <string name="builtin_module_monochrome_description">Audio FLAC Lossless dari Monochrome tanpa perlu akun, lengkap dengan Lab Audio</string>
+    <string name="builtin_module_jiosaavn_description">Katalog JioSaavn dalam AAC hingga 320 kbps tanpa perlu akun</string>
+    <string name="builtin_module_stream">Kualitas Stream</string>
+    <string name="builtin_module_apple_aac_description">Stream stereo standar Apple Music</string>
+    <string name="builtin_module_apple_he_description">Seperempat ukuran data, cocok untuk jaringan lambat</string>
+    <string name="builtin_module_saavn_320_description">Kualitas terbaik JioSaavn (320 kbps)</string>
+    <string name="builtin_module_saavn_160_description">Hemat separuh data, tetap jernih</string>
+    <string name="builtin_module_saavn_96_description">Cocok untuk jaringan lambat atau hemat kuota</string>
+    <string name="builtin_module_region">Wilayah</string>
+    <string name="builtin_module_account_region">Sesuai akun</string>
+    <string name="builtin_module_account_region_description">Mencari katalog sesuai negara akun Apple kamu</string>
+    <string name="builtin_module_region_description">Mencari katalog wilayah %1$s</string>
+</resources>

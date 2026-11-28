@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="xmix_title">Crossfade</string>
+    <string name="xmix_back">Lab Audio</string>
+    <string name="xmix_off">Mati</string>
+    <string name="xmix_off_desc">Tanpa transisi antar lagu</string>
+    <string name="xmix_auto">Crossfade Otomatis</string>
+    <string name="xmix_auto_desc">Transisi halus %1$d detik antar setiap lagu</string>
+    <string name="xmix_manual">Crossfade Manual</string>
+    <string name="xmix_manual_desc">Atur durasi crossfade sendiri</string>
+    <string name="xmix_length">Durasi</string>
+    <string name="xmix_crossmix">CrossMix</string>
+    <string name="xmix_crossmix_desc">Gaya DJ: membaca tempo, ketukan, nada, dan vokal lagu lalu memilih transisi terbaik agar dua vokal tidak bertabrakan</string>
+    <string name="xmix_crossmix_desc_unavailable">Sedang disempurnakan, belum dapat diaktifkan. Transisi gaya DJ otomatis sesuai tempo dan ketukan</string>
+    <string name="xmix_gapless">Pertahankan album tanpa jeda</string>
+    <string name="xmix_gapless_desc">Trek album yang menyambung langsung tetap diputar utuh tanpa crossfade</string>
+    <string name="xmix_in_progress">Sedang diproses</string>
+    <string name="xmix_transport_title">Transisi jeda, putar, dan lewati lagu</string>
+    <string name="xmix_fade_enable">Aktifkan fade</string>
+    <string name="xmix_fade_enable_desc">Melembutkan suara saat dijeda atau dilewati, dan naik perlahan saat diputar</string>
+    <string name="xmix_layered_effect">Efek berlapis</string>
+    <string name="xmix_layered_effect_desc">Tambahkan efek CrossMix di atas fade, seperti gema atau putaran balik piringan</string>
+    <string name="xmix_choose_effect">Pilih efek</string>
+    <string name="xmix_effect_none">Tidak ada</string>
+    <string name="xmix_effect_echo">Gema (Echo)</string>
+    <string name="xmix_effect_rewind">Putar balik (Rewind)</string>
+    <string name="xmix_effect_tape_stop">Tape stop</string>
+    <string name="xmix_effect_far_away">Memudar jauh</string>
+    <string name="xmix_effect_reverb">Sapuan reverb</string>
+    <string name="xmix_effect_filter">Sapuan filter</string>
+    <string name="xmix_status_title">Status CrossMix</string>
+    <string name="xmix_status_empty">Belum ada. Putar lagu dengan antrean berikutnya</string>
+    <string name="xmix_test_title">Uji pada lagu ini</string>
+    <string name="xmix_test_desc">Uji transisi ke lagu berikutnya</string>
+    <string name="xmix_test_detail">Menyiapkan transisi ke lagu berikutnya lalu melompat ke beberapa detik sebelum akhir lagu</string>
+</resources>

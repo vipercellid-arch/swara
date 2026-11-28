@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lib_artist">Artis</string>
+    <string name="lib_album">Album</string>
+    <string name="lib_playlist">Playlist</string>
+    <string name="lib_nothing_to_show">Belum ada yang ditampilkan</string>
+    <string name="lib_no_results">Tidak ada di pustakamu yang cocok dengan \"%1$s\"</string>
+    <string name="lib_count_on_device">%1$s di perangkat ini</string>
+    <string name="lib_count_cached">%1$s di cache</string>
+    <string name="lib_albums_local_subtitle">Album dengan lagu di perangkat ini.</string>
+    <string name="lib_albums_cached_subtitle">Album dengan lagu di cache.</string>
+    <string name="lib_artists_local_subtitle">Artis dengan lagu di perangkat ini.</string>
+    <string name="lib_artists_cached_subtitle">Artis dengan lagu di cache.</string>
+    <string name="lib_artists_all_subtitle">Semua artis di pustakamu ada di sini.</string>
+    <string name="lib_artists_search">Cari artis berdasarkan nama</string>
+    <string name="lib_playlists_imported_subtitle">Playlist yang diimpor dari %1$s.</string>
+    <string name="lib_playlists_local_subtitle">Playlist dengan lagu di perangkat ini.</string>
+    <string name="lib_playlists_cached_subtitle">Playlist dengan lagu di cache.</string>
+    <string name="lib_playlists_all_subtitle">Semua playlist di pustakamu ada di sini.</string>
+    <string name="lib_playlists_search">Cari playlist berdasarkan nama</string>
+    <string name="lib_songs_subtitle">Semua lagu di pustakamu ada di sini.</string>
+    <string name="lib_songs_search">Cari lagu berdasarkan judul atau artis</string>
+    <string name="lib_recent_title">Ditambahkan</string>
+    <string name="lib_recent_subtitle">Baru-baru ini</string>
+    <string name="lib_recent_search">Cari lagu di daftar ini</string>
+    <string name="lib_imported_unknown_source">sumber tidak dikenal</string>
+    <string name="lib_imported_search">Cari lagu yang diimpor dari %1$s</string>
+</resources>

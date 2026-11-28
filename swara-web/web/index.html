@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Swara — Pemutar Musik Mandiri untuk Android, Google TV & Windows</title>
+  <link rel="icon" href="/assets/swara_icon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050507;
+      --surface: rgba(17, 17, 23, 0.88);
+      --border: rgba(255, 255, 255, 0.10);
+      --muted: #9ca3af;
+      --green: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Floating Glass Header */
+    .nav-wrap { position: sticky; top: 14px; z-index: 50; display: flex; justify-content: center; padding: 0 14px; }
+    .nav {
+      width: min(980px, 100%);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(12, 12, 16, 0.78);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.02rem; letter-spacing: -0.3px; text-decoration: none; color: #fff; }
+    .brand img { width: 32px; height: 32px; border-radius: 9px; border: 1px solid var(--border); }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-links a, .nav-links button {
+      border: 0; background: transparent; color: #d4d4d8; text-decoration: none;
+      font-weight: 700; font-size: 0.84rem; padding: 8px 12px; border-radius: 999px;
+      cursor: pointer; font-family: inherit; transition: all .2s ease;
+    }
+    .nav-links a:hover, .nav-links button:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .nav-links .cta-sm { background: #fff; color: #050507; }
+    .nav-links .cta-sm:hover { background: #e5e7eb; }
+    @media (max-width: 580px) { .nav-links a.hide-sm { display: none; } }
+
+    /* Hero */
+    .hero-stage {
+      position: relative;
+      min-height: 74vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 60px 18px 42px; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 65% 55% at 50% 42%, rgba(255,255,255,0.09), transparent 70%),
+        radial-gradient(circle at 18% 25%, rgba(34,197,94,0.14), transparent 42%),
+        radial-gradient(circle at 82% 72%, rgba(59,130,246,0.12), transparent 44%);
+    }
+    .bg-marquee-wrap {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      display: flex; flex-direction: column; justify-content: center; gap: 6px;
+      opacity: 0.06; overflow: hidden; user-select: none;
+    }
+    .bg-marquee {
+      display: flex; white-space: nowrap;
+      font-size: clamp(4.8rem, 15vw, 11.5rem);
+      font-weight: 900; letter-spacing: -0.04em; line-height: 0.88;
+      animation: scrollLeft 28s linear infinite;
+    }
+    .bg-marquee.rev { animation: scrollRight 32s linear infinite; }
+    @keyframes scrollLeft { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes scrollRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+    .hero-inner { position: relative; z-index: 2; max-width: 760px; }
+    .ver-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 14px; border-radius: 999px; margin-bottom: 18px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
+      font-size: 0.78rem; font-weight: 700; color: #e4e4e7;
+    }
+    .ver-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+    .hero-inner h1 {
+      margin: 0;
+      font-size: clamp(3.6rem, 10vw, 6.8rem);
+      font-weight: 900; letter-spacing: -0.055em; line-height: 0.96;
+      background: linear-gradient(180deg, #ffffff 30%, #a1a1aa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      margin: 16px auto 0; max-width: 540px;
+      font-size: clamp(0.95rem, 2.2vw, 1.08rem); color: var(--muted); line-height: 1.55;
+    }
+    .hero-actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .btn-primary {
+      border: 0; background: #fff; color: #050507;
+      font-weight: 800; font-size: 0.96rem; font-family: inherit;
+      padding: 15px 30px; border-radius: 999px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 9px;
+      box-shadow: 0 14px 40px rgba(255,255,255,0.18);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 46px rgba(255,255,255,0.26); }
+    .btn-ghost {
+      border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff;
+      font-weight: 700; font-size: 0.94rem; font-family: inherit; text-decoration: none;
+      padding: 15px 26px; border-radius: 999px; cursor: pointer; transition: all .18s ease;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.28); }
+    .scroll-cue { position: relative; z-index: 2; margin-top: 38px; font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase; color: #71717a; }
+
+    .ticker-strip { width: 100%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.025); padding: 11px 0; overflow: hidden; }
+    .ticker-track { display: flex; white-space: nowrap; gap: 28px; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.22em; color: #a1a1aa; animation: scrollLeft 24s linear infinite; }
+
+    /* Highlight Strip */
+    .stats { max-width: 880px; margin: 44px auto 14px; padding: 0 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 600px) { .stats { grid-template-columns: 1fr; } }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 22px 16px; text-align: center; transition: border-color .2s ease, transform .2s ease; }
+    .stat-card:hover { border-color: rgba(255,255,255,0.24); transform: translateY(-2px); }
+    .stat-num { font-size: clamp(1.38rem, 3.2vw, 2rem); font-weight: 900; letter-spacing: -0.04em; }
+    .stat-lbl { font-size: 0.78rem; color: var(--muted); font-weight: 600; margin-top: 5px; }
+
+    /* Interactive Tabbed App Preview */
+    .tour-sec { max-width: 980px; margin: 46px auto 34px; padding: 12px 16px; }
+    .sec-head { text-align: center; margin-bottom: 26px; }
+    .sec-head h2 { margin: 0; font-size: clamp(1.65rem, 4.4vw, 2.6rem); font-weight: 900; letter-spacing: -0.04em; }
+    .sec-head p { margin: 8px auto 0; color: var(--muted); font-size: 0.92rem; max-width: 540px; }
+
+    .tour-stage {
+      display: grid; grid-template-columns: 320px 1fr; gap: 32px; align-items: center;
+      background: linear-gradient(155deg, rgba(22,22,30,0.9), rgba(10,10,14,0.96));
+      border: 1px solid var(--border); border-radius: 34px; padding: 30px;
+    }
+    @media (max-width: 800px) { .tour-stage { grid-template-columns: 1fr; padding: 22px 18px; justify-items: center; text-align: center; } }
+    .phone-frame {
+      width: min(296px, 82vw); padding: 10px; border-radius: 38px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.16); box-shadow: 0 30px 80px rgba(0,0,0,0.82);
+    }
+    .tour-screen { position: relative; border-radius: 29px; overflow: hidden; background: #000; aspect-ratio: 9 / 19.5; }
+    .tour-screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.03); transition: opacity .32s ease, transform .38s ease; }
+    .tour-screen img.active { opacity: 1; transform: scale(1); }
+
+    .tour-tabs { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    .tab-pill {
+      display: flex; align-items: center; gap: 14px; width: 100%;
+      padding: 15px 18px; border-radius: 20px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03); color: #d4d4d8;
+      cursor: pointer; font-family: inherit; text-align: left; transition: all .2s ease;
+    }
+    .tab-pill:hover { background: rgba(255,255,255,0.07); color: #fff; }
+    .tab-pill.active { background: #fff; color: #050507; border-color: #fff; transform: translateX(4px); }
+    @media (max-width: 800px) { .tab-pill.active { transform: none; } }
+    .tab-ico {
+      width: 40px; height: 40px; border-radius: 13px; flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.08);
+    }
+    .tab-pill.active .tab-ico { background: rgba(5,5,7,0.10); }
+    .tab-ico svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .tab-title { font-weight: 800; font-size: 0.96rem; }
+    .tab-desc { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+    .tab-pill.active .tab-desc { color: #3f3f46; }
+
+    /* Features Bento */
+    .feat-sec { max-width: 980px; margin: 38px auto 26px; padding: 0 16px; }
+    .feat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    @media (max-width: 780px) { .feat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 520px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 24px;
+      padding: 22px; transition: border-color .2s ease, transform .2s ease;
+    }
+    .feat-card:hover { border-color: rgba(255,255,255,0.24); transform: translateY(-2px); }
+    .feat-tag { display: inline-block; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #4ade80; margin-bottom: 10px; }
+    .feat-card h3 { margin: 0 0 8px; font-size: 1.04rem; font-weight: 800; letter-spacing: -0.02em; }
+    .feat-card p { margin: 0; color: var(--muted); font-size: 0.85rem; line-height: 1.55; }
+
+    /* Donasi QRIS */
+    .donate-sec { max-width: 980px; margin: 28px auto 34px; padding: 0 16px; }
+    .donate-card {
+      position: relative; overflow: hidden;
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 28px; align-items: center;
+      padding: 34px; border-radius: 32px;
+      background: radial-gradient(circle at 85% 20%, rgba(34,197,94,0.16), transparent 55%), #0e1211;
+      border: 1px solid rgba(34,197,94,0.22);
+      box-shadow: 0 26px 70px rgba(0,0,0,0.55);
+    }
+    @media (max-width: 740px) { .donate-card { grid-template-columns: 1fr; text-align: center; padding: 26px 20px; } }
+    .donate-tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 6px 13px; border-radius: 999px;
+      background: rgba(34,197,94,0.14); border: 1px solid rgba(34,197,94,0.32);
+      color: #4ade80; font-size: 0.78rem; font-weight: 800; margin-bottom: 14px;
+    }
+    .donate-title { margin: 0 0 10px; font-size: clamp(1.6rem, 3.8vw, 2.3rem); font-weight: 900; letter-spacing: -0.04em; }
+    .donate-sub { margin: 0 0 22px; color: var(--muted); font-size: 0.92rem; }
+    .donate-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    @media (max-width: 740px) { .donate-btns { justify-content: center; } }
+    .qris-showcase { display: flex; justify-content: center; }
+    .qris-wrap {
+      padding: 14px; border-radius: 24px; background: #fff; cursor: zoom-in;
+      box-shadow: 0 20px 55px rgba(34,197,94,0.22); transition: transform .2s ease;
+    }
+    .qris-wrap:hover { transform: scale(1.03); }
+    .qris-wrap img { display: block; width: min(220px, 64vw); height: auto; border-radius: 12px; }
+
+    /* Footer */
+    .footer { max-width: 980px; margin: 18px auto 38px; padding: 20px 20px 0; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 0.84rem; flex-wrap: wrap; gap: 10px; }
+    .ig-link { color: #fff; text-decoration: none; font-weight: 700; }
+
+    /* Modals */
+    .modal-bg { position: fixed; inset: 0; z-index: 90; background: rgba(0,0,0,0.78); backdrop-filter: blur(12px); display: none; align-items: center; justify-content: center; padding: 18px; }
+    .modal-bg.show { display: flex; }
+    .modal-card { width: min(580px, 100%); background: #101015; border: 1px solid rgba(255,255,255,0.14); border-radius: 28px; padding: 26px; text-align: center; box-shadow: 0 32px 90px rgba(0,0,0,0.85); }
+    .dl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0 18px; }
+    @media (max-width: 580px) { .dl-grid { grid-template-columns: 1fr; } }
+    .dl-opt { display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 20px 12px; border-radius: 22px; background: #17171f; border: 1px solid var(--border); color: #fff; text-decoration: none; transition: all .2s ease; }
+    .dl-opt:hover { border-color: rgba(255,255,255,0.38); transform: translateY(-2px); background: #1e1e29; }
+    .dl-opt svg { width: 32px; height: 32px; stroke: #fff; fill: none; stroke-width: 1.8; }
+    .dl-opt .t { font-weight: 800; font-size: 0.96rem; }
+    .dl-opt .s { font-size: 0.76rem; color: var(--muted); }
+    .dl-opt .pill-dl { margin-top: 4px; background: #fff; color: #050507; font-weight: 800; font-size: 0.78rem; padding: 7px 16px; border-radius: 999px; }
+    .close-btn { border: 1px solid var(--border); background: transparent; color: #d4d4d8; padding: 10px 22px; border-radius: 999px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  </style>
+</head>
+<body>
+  <div class="nav-wrap">
+    <nav class="nav">
+      <a class="brand" href="#">
+        <img src="/assets/swara_icon.jpg" alt="Swara">
+        <span>Swara</span>
+      </a>
+      <div class="nav-links">
+        <a href="#preview">Preview</a>
+        <a href="#fitur" class="hide-sm">Fitur</a>
+        <a href="#donasi">Donasi</a>
+        <button class="cta-sm" type="button" onclick="openDownloadModal()">Unduh</button>
+      </div>
+    </nav>
+  </div>
+
+  <header class="hero-stage">
+    <div class="hero-glow"></div>
+    <div class="bg-marquee-wrap" aria-hidden="true">
+      <div class="bg-marquee">SWARA&nbsp;SWARA&nbsp;SWARA&nbsp;SWARA&nbsp;SWARA&nbsp;SWARA&nbsp;</div>
+      <div class="bg-marquee rev">MUSIC&nbsp;MUSIC&nbsp;MUSIC&nbsp;MUSIC&nbsp;MUSIC&nbsp;MUSIC&nbsp;</div>
+    </div>
+    <div class="hero-inner">
+      <div class="ver-pill"><span class="ver-dot"></span><span id="heroVerPill">Swara v1.0.0 · Mandiri tanpa login</span></div>
+      <h1>Swara</h1>
+      <p class="hero-sub">Pemutar musik cepat, dingin, dan bebas iklan dengan Lab Audio 2.0, Cloud Backup mandiri, dan Swara Wrap untuk Android, Google TV, dan Windows.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" type="button" onclick="openDownloadModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Unduh Swara
+        </button>
+        <a class="btn-ghost" href="#donasi">Donasi QRIS</a>
+      </div>
+    </div>
+    <div class="scroll-cue">scroll</div>
+  </header>
+
+  <div class="ticker-strip" aria-hidden="true">
+    <div class="ticker-track">
+      <span>SWARA</span><span>•</span><span>ANDROID</span><span>•</span><span>GOOGLE TV</span><span>•</span><span>WINDOWS</span><span>•</span><span>LAB AUDIO 2.0</span><span>•</span><span>TANPA LOGIN</span><span>•</span>
+      <span>SWARA</span><span>•</span><span>ANDROID</span><span>•</span><span>GOOGLE TV</span><span>•</span><span>WINDOWS</span><span>•</span><span>LAB AUDIO 2.0</span><span>•</span><span>TANPA LOGIN</span><span>•</span>
+    </div>
+  </div>
+
+  <section class="stats">
+    <div class="stat-card"><div class="stat-num" id="sVersion">v1.0.0</div><div class="stat-lbl">Rilis Terbaru GitHub</div></div>
+    <div class="stat-card"><div class="stat-num">3 Platform</div><div class="stat-lbl">Android · Google TV · Windows</div></div>
+    <div class="stat-card"><div class="stat-num">100% Lokal</div><div class="stat-lbl">Tanpa Login & Bebas Iklan</div></div>
+  </section>
+
+  <!-- Interactive Tabbed Preview -->
+  <section class="tour-sec" id="preview">
+    <div class="sec-head">
+      <h2>Lihat tampilan tiap tab</h2>
+      <p>Pilih tab di bawah untuk melihat pratinjau langsung antarmuka Swara.</p>
+    </div>
+    <div class="tour-stage">
+      <div class="phone-frame">
+        <div class="tour-screen">
+          <img id="img0" class="active" src="/assets/preview_home.jpg" alt="Beranda">
+          <img id="img1" src="/assets/preview_player.jpg" alt="Pemutar">
+          <img id="img2" src="/assets/preview_search.jpg" alt="Pencarian">
+          <img id="img3" src="/assets/preview_library.jpg" alt="Pustaka">
+          <img id="img4" src="/assets/preview_profile.jpg" alt="Profil">
+        </div>
+      </div>
+      <div class="tour-tabs" role="tablist" aria-label="Tab Preview Swara">
+        <button id="tBtn0" class="tab-pill active" type="button" onclick="setTour(0)">
+          <span class="tab-ico"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/></svg></span>
+          <span><div class="tab-title">Beranda (Dashboard)</div><div class="tab-desc">Kartu sorotan lanjutkan musik, rekomendasi cepat, dan Swara Wrap.</div></span>
+        </button>
+        <button id="tBtn1" class="tab-pill" type="button" onclick="setTour(1)">
+          <span class="tab-ico"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span>
+          <span><div class="tab-title">Pemutar (Player)</div><div class="tab-desc">Sampul layar penuh, lirik sinkron, Lab Audio 2.0, dan kontrol perangkat.</div></span>
+        </button>
+        <button id="tBtn2" class="tab-pill" type="button" onclick="setTour(2)">
+          <span class="tab-ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <span><div class="tab-title">Pencarian & Suasana</div><div class="tab-desc">Cari lagu, album, lirik, serta kategori suasana & genre instan.</div></span>
+        </button>
+        <button id="tBtn3" class="tab-pill" type="button" onclick="setTour(3)">
+          <span class="tab-ico"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+          <span><div class="tab-title">Pustaka & Impor</div><div class="tab-desc">Kelola lagu lokal, cache, mode offline, dan impor playlist Spotify/Apple/YT.</div></span>
+        </button>
+        <button id="tBtn4" class="tab-pill" type="button" onclick="setTour(4)">
+          <span class="tab-ico"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+          <span><div class="tab-title">Profil & Statistik</div><div class="tab-desc">Kartu profil pribadi, total waktu dengar, artis teratas, dan Swara Wrap.</div></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Bento -->
+  <section class="feat-sec" id="fitur">
+    <div class="sec-head">
+      <h2>Matang di Android, Google TV & Windows</h2>
+      <p>Semua pustaka, preferensi, dan Swara Wrap tersimpan aman secara lokal di perangkat kamu.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <span class="feat-tag">Lab Audio 2.0</span>
+        <h3>Stage 3D, 8D & Dolby Atmos</h3>
+        <p>Prosesor audio real-time dengan Stage 3D, 8D Audio, FX Presets, Equalizer grafis, dan AutoEQ.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-tag">Performa & Suhu</span>
+        <h3>Mode Otomatis & Anti-Panas</h3>
+        <p>Pilih mode performa langsung dari Pengaturan agar baterai tetap awet dan perangkat tidak panas.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-tag">Cloud Backup</span>
+        <h3>Dropbox, OneDrive & WebDAV</h3>
+        <p>Cadangkan dan pulihkan pustaka musik secara otomatis ke cloud pribadi pilihanmu sendiri.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-tag">Swara Wrap</span>
+        <h3>Rekap Mingguan & Bulanan</h3>
+        <p>Kilas balik musik penuh Bahasa Indonesia yang mendukung mode Portrait maupun Landscape Tablet.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-tag">Bahasa Indonesia</span>
+        <h3>Antarmuka 100% Lokal</h3>
+        <p>Seluruh menu, Lab Audio, Integrasi Perangkat, Modul, dan dialog telah diterjemahkan rapi.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-tag">Lintas Perangkat</span>
+        <h3>Kontrol HP, Tablet & TV</h3>
+        <p>Hubungkan perangkat di Wi-Fi yang sama untuk remote kontrol dan sinkronisasi pustaka lokal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Donasi QRIS -->
+  <section class="donate-sec" id="donasi">
+    <div class="donate-card">
+      <div>
+        <div class="donate-tag">QRIS ViperCell</div>
+        <h2 class="donate-title">Dukung Swara</h2>
+        <p class="donate-sub">Scan QRIS dari aplikasi e-wallet atau m-banking untuk mendukung pengembangan Swara oleh Teves.</p>
+        <div class="donate-btns">
+          <button class="btn-primary" type="button" style="padding:12px 22px;font-size:0.88rem;" onclick="document.getElementById('qrisModal').classList.add('show')">Perbesar QRIS</button>
+          <a href="/assets/qris_vipercell.jpg" download="QRIS-Swara-ViperCell.jpg" class="btn-ghost" style="padding:12px 22px;font-size:0.88rem;">Simpan QRIS</a>
+        </div>
+      </div>
+      <div class="qris-showcase">
+        <div class="qris-wrap" onclick="document.getElementById('qrisModal').classList.add('show')">
+          <img src="/assets/qris_vipercell.jpg" alt="QRIS ViperCell">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 Swara · Dibuat oleh Teves</span>
+    <div style="display:flex;gap:16px;align-items:center;">
+      <a class="ig-link" href="https://github.com/vipercellid-arch/swara/releases" target="_blank" rel="noopener">GitHub Releases</a>
+      <a class="ig-link" href="https://www.instagram.com/t3ves_?evlk=MXJuZHQybmxjMTV4NA==" target="_blank" rel="noopener">@t3ves_</a>
+    </div>
+  </footer>
+
+  <!-- Download Modal -->
+  <div class="modal-bg" id="downloadModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="modal-card">
+      <div style="font-size:1.22rem;font-weight:900;letter-spacing:-0.3px;">Pilih Perangkat</div>
+      <div style="font-size:0.84rem;color:var(--muted);margin-top:4px;" id="dlVerSub">Swara v1.0.0</div>
+      <div class="dl-grid">
+        <a class="dl-opt" id="dlAndroidBtn" href="https://github.com/vipercellid-arch/swara/releases/download/v1.0.0/Swara-v1.0.0.apk" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          <div class="t">Android</div>
+          <div class="s">HP & Tablet (.apk)</div>
+          <span class="pill-dl">Unduh</span>
+        </a>
+        <a class="dl-opt" id="dlTvBtn" href="https://github.com/vipercellid-arch/swara/releases/download/v1.0.0/Swara-TV-v1.0.0.apk" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="18" x2="12" y2="21"/></svg>
+          <div class="t">Swara TV</div>
+          <div class="s">Google / Android TV</div>
+          <span class="pill-dl">Unduh</span>
+        </a>
+        <a class="dl-opt" id="dlWinBtn" href="https://github.com/vipercellid-arch/swara/releases/download/v1.0.0/Swara-Windows-v1.0.0.exe" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+          <div class="t">Windows</div>
+          <div class="s">Desktop (.exe)</div>
+          <span class="pill-dl">Unduh</span>
+        </a>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><a class="btn-ghost" style="padding:10px 18px;font-size:0.84rem;" href="https://github.com/vipercellid-arch/swara/releases" target="_blank" rel="noopener">Semua Rilis di GitHub</a><button class="close-btn" type="button" onclick="document.getElementById('downloadModal').classList.remove('show')">Tutup</button></div>
+    </div>
+  </div>
+
+  <!-- QRIS Zoom Modal -->
+  <div class="modal-bg" id="qrisModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="modal-card" style="max-width:380px;">
+      <div style="font-weight:800;margin-bottom:14px;">QRIS ViperCell</div>
+      <div style="background:#fff;padding:14px;border-radius:20px;display:inline-block;margin-bottom:16px;">
+        <img src="/assets/qris_vipercell.jpg" alt="QRIS ViperCell" style="display:block;width:min(280px,76vw);height:auto;border-radius:10px;">
+      </div>
+      <div><button class="close-btn" type="button" onclick="document.getElementById('qrisModal').classList.remove('show')">Tutup</button></div>
+    </div>
+  </div>
+
+  <script>
+    function openDownloadModal() { document.getElementById('downloadModal').classList.add('show'); }
+    function setTour(idx) {
+      for (let i = 0; i < 5; i++) {
+        document.getElementById('img' + i).classList.toggle('active', i === idx);
+        document.getElementById('tBtn' + i).classList.toggle('active', i === idx);
+      }
+    }
+    async function loadLatestRelease() {
+      try {
+        const r = await fetch('https://api.github.com/repos/vipercellid-arch/swara/releases?per_page=1');
+        const list = await r.json();
+        if (!Array.isArray(list) || !list.length) return;
+        const rel = list[0];
+        const tag = String(rel.tag_name || '').trim();
+        const ver = tag.replace(/^v/i, '');
+        if (ver) {
+          document.getElementById('sVersion').textContent = 'v' + ver;
+          document.getElementById('dlVerSub').textContent = 'Swara v' + ver;
+          document.getElementById('heroVerPill').textContent = 'Swara v' + ver + ' · Mandiri tanpa login';
+        }
+        const assets = rel.assets || [];
+        const apkAndroid = assets.find(a => /swara-v.*\.apk$/i.test(a.name) && !/tv/i.test(a.name));
+        const apkTv = assets.find(a => /swara-tv.*\.apk$/i.test(a.name));
+        const exeWin = assets.find(a => /\.exe$/i.test(a.name));
+        if (apkAndroid) document.getElementById('dlAndroidBtn').href = apkAndroid.browser_download_url;
+        if (apkTv) document.getElementById('dlTvBtn').href = apkTv.browser_download_url;
+        if (exeWin) document.getElementById('dlWinBtn').href = exeWin.browser_download_url;
+      } catch (_) {}
+    }
+    loadLatestRelease();
+  </script>
+</body>
+</html>
